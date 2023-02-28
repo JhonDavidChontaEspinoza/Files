@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<style>
+    table, th, td
+    {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    
+    table
+    {
+        width: 100%;
+        background-color: #E7EAEB;
+    }
+    
+    
+    .tdDiasLote
+    {
+        width: 100px;
+        height: 100px;
+        transform: rotate(270deg);
+        white-space: nowrap;
+        vertical-align: middle;
+        text-align: center;
+    }
+    
+    .textAreaLote
+    {
+        width: 100px;
+        float: left;
+        resize: none;
+        overflow: hidden;
+        text-align: center;
+        height: 3.5em;
+        font-size: 12px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        margin-right: 8px;
+        margin-left: 10px;
+    }
+    textarea::first-line
+    {
+        font-size: 14px;
+        font-weight: bold; /* establecer el peso de la fuente en negrita solo para la primera línea */
+    }
+    
+    /*
+    textarea
+    {
+        line-height: 1.2;  
+        font-size: 12px; 
+    }
+    textarea:nth-of-type(2)
+    {
+        font-size: 10px;  
+    }
+    textarea:nth-of-type(3)
+    {
+        font-size: 10px;  
+    }
+    */
+    
+    #myDivHoy
+    {
+        width: 1250px;
+    }
+    #myDivAyer
+    {
+        width: 1250px;
+    }
+</style>
+<!-- <script
+  src="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/util/apex-charts/dist/apexcharts.min.js">
+</script>
+<link href="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/factsheet.css" rel="stylesheet" />
+<script src="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/factsheet.js"></script> -->
+<head>
+    <script src="../ASSETS/util/apex-charts/dist/apexcharts.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>-->
+</head>
+<body>
+    <table id="myTableLotes">
+        <tr>
+            <th>
+                Fecha
+            </th>
+            <th>
+                <h3>
+                    Lotes por despachar según tiempo faltante</h3>
+            </th>
+        </tr>
+        <tr>
+            <td class="tdDiasLote">
+                <h4>
+                    Lunes, 19</h4>
+            </td>
+            <td>
+                <div id="myDivHoy">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="tdDiasLote">
+                <h4>
+                    Domingo 18</h4>
+            </td>
+            <td>
+                <div id="myDivAyer">
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <br />
+    <!-- HTML -->
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    Lote
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas de la tabla se agregarán aquí -->
+        </tbody>
+    </table>
+    <script>
+        var arrLotes = [];
+        var valores  = [];
+         
+
+ 
+        //fnJuntarFilasEnUna();
+        //fnRenderMonitorBar();
+        fnGetLotesDepachados();
+
+
+        function fnGetLotesDepachados(){
+            
+            var dataJSON=[{"Lote":537522,"Tipo":"FNO_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"39:39:01","Horas":39,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 01:06:26","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537523,"Tipo":"FNO_MAY","Cantidad":336,"Proceso":"Laminado","Hora":"39:38:56","Horas":39,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 01:06:31","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537524,"Tipo":"FBI_BIL","Cantidad":12,"Proceso":"Despacho Obs.","Hora":"39:38:56","Horas":39,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 01:06:31","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537525,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Impresión","Hora":"39:38:50","Horas":39,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 01:06:37","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537526,"Tipo":"FNO_MAY","Cantidad":228,"Proceso":"Troquelado","Hora":"29:38:28","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:06:59","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537527,"Tipo":"FBI_BIL","Cantidad":228,"Proceso":"Calidad escáner","Hora":"29:38:23","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:04","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537528,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"29:38:15","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:12","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537529,"Tipo":"FWE_MAY","Cantidad":72,"Proceso":"Impresión","Hora":"29:38:14","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:13","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537530,"Tipo":"FCN_MAY","Cantidad":36,"Proceso":"Laminado","Hora":"29:38:13","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:14","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537531,"Tipo":"FNO_MAY","Cantidad":264,"Proceso":"Calidad escáner","Hora":"29:38:09","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:18","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537532,"Tipo":"FBI_BIL","Cantidad":156,"Proceso":"Verificación","Hora":"29:38:07","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:20","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537533,"Tipo":"FWE_MAY","Cantidad":192,"Proceso":"Verificación","Hora":"29:38:04","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:23","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537534,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Verificación","Hora":"29:38:04","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:23","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537535,"Tipo":"FCN_MAY","Cantidad":228,"Proceso":"Calidad escáner","Hora":"29:38:00","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:27","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537536,"Tipo":"FCN_MAY","Cantidad":84,"Proceso":"Laminado","Hora":"29:37:58","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:29","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537537,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Troquelado","Hora":"29:37:52","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:35","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537538,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Impresión","Hora":"29:37:46","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:41","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537539,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Troquelado","Hora":"29:37:40","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:47","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537540,"Tipo":"ENO_MEN","Cantidad":60,"Proceso":"Laminado","Hora":"29:37:39","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:48","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537541,"Tipo":"ENO_MEN","Cantidad":48,"Proceso":"Calidad escáner","Hora":"29:37:38","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:49","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537542,"Tipo":"ENO_MEN","Cantidad":336,"Proceso":"Troquelado","Hora":"29:37:33","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:54","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537543,"Tipo":"ECN_MEN","Cantidad":12,"Proceso":"Impresión","Hora":"29:37:33","Horas":29,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 11:07:54","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537551,"Tipo":"FNO_MAY","Cantidad":216,"Proceso":"Laminado","Hora":"27:19:49","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:25:38","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537552,"Tipo":"FBI_BIL","Cantidad":144,"Proceso":"Troquelado","Hora":"27:19:46","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:25:41","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537553,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"27:19:38","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:25:49","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537554,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"27:19:31","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:25:56","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537555,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Laminado","Hora":"27:19:24","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:03","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537556,"Tipo":"FWE_MAY","Cantidad":360,"Proceso":"Troquelado","Hora":"27:19:19","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:08","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537557,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Impresión","Hora":"27:19:19","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:08","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537558,"Tipo":"FCN_MAY","Cantidad":420,"Proceso":"Impresión","Hora":"27:19:12","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:15","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537559,"Tipo":"FCN_MAY","Cantidad":204,"Proceso":"Troquelado","Hora":"27:19:08","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:19","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537560,"Tipo":"FCB_BIL","Cantidad":12,"Proceso":"Troquelado","Hora":"27:19:08","Horas":27,"Faltante":0,"Prioridad":"PRIORITARIO","FechaHoraPrioridad":"2023-02-20T20:06:05.127","FechaDisposicion":"2023-02-27 13:26:19","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537561,"Tipo":"FCN_MAY","Cantidad":192,"Proceso":"Troquelado","Hora":"27:19:05","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:22","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537562,"Tipo":"FNO_MAY","Cantidad":48,"Proceso":"Laminado","Hora":"27:19:04","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:23","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537563,"Tipo":"FBI_BIL","Cantidad":48,"Proceso":"Calidad escáner","Hora":"27:19:03","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:24","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537564,"Tipo":"FWE_MAY","Cantidad":168,"Proceso":"Calidad escáner","Hora":"27:19:01","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:26","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537565,"Tipo":"FCN_MAY","Cantidad":240,"Proceso":"Laminado","Hora":"27:18:57","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:30","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537566,"Tipo":"FCN_MAY","Cantidad":72,"Proceso":"Laminado","Hora":"27:18:56","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:31","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537567,"Tipo":"FCB_BIL","Cantidad":12,"Proceso":"Troquelado","Hora":"27:18:56","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:31","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537568,"Tipo":"FCN_MAY","Cantidad":12,"Proceso":"Troquelado","Hora":"27:18:55","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:32","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537569,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Troquelado","Hora":"27:18:49","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:38","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537570,"Tipo":"ENO_MEN","Cantidad":156,"Proceso":"Troquelado","Hora":"27:18:47","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:40","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537571,"Tipo":"ENO_MEN","Cantidad":24,"Proceso":"Troquelado","Hora":"27:18:47","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:40","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537572,"Tipo":"ENO_MEN","Cantidad":156,"Proceso":"Impresión","Hora":"27:18:44","Horas":27,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 13:26:43","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537573,"Tipo":"FNO_MAY","Cantidad":96,"Proceso":"Verificación","Hora":"25:51:19","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:08","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537574,"Tipo":"FBI_BIL","Cantidad":108,"Proceso":"Verificación","Hora":"25:51:16","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:11","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537575,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Verificación","Hora":"25:51:08","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:19","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537576,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Verificación","Hora":"25:51:00","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:27","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537577,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Verificación","Hora":"25:50:53","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:34","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537578,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Verificación","Hora":"25:50:46","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:41","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537579,"Tipo":"FWE_MAY","Cantidad":240,"Proceso":"Verificación","Hora":"25:50:42","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:45","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537580,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Verificación","Hora":"25:50:42","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:45","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537581,"Tipo":"FCN_MAY","Cantidad":156,"Proceso":"Troquelado","Hora":"25:50:39","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:48","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537582,"Tipo":"FCN_MAY","Cantidad":120,"Proceso":"Laminado","Hora":"25:50:37","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:50","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537583,"Tipo":"FBI_BIL","Cantidad":48,"Proceso":"Calidad escáner","Hora":"25:50:36","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:51","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537584,"Tipo":"FWE_MAY","Cantidad":60,"Proceso":"Laminado","Hora":"25:50:35","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:52","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537585,"Tipo":"FCN_MAY","Cantidad":36,"Proceso":"Laminado","Hora":"25:50:33","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:54","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537586,"Tipo":"FCN_MAY","Cantidad":36,"Proceso":"Laminado","Hora":"25:50:32","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:55","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537587,"Tipo":"ENO_MEN","Cantidad":216,"Proceso":"Laminado","Hora":"25:50:28","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:59","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537588,"Tipo":"ENO_MEN","Cantidad":12,"Proceso":"Laminado","Hora":"25:50:28","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:54:59","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537589,"Tipo":"ENO_MEN","Cantidad":168,"Proceso":"Laminado","Hora":"25:50:26","Horas":26,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 14:55:01","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537596,"Tipo":"FNO_MAY","Cantidad":108,"Proceso":"Troquelado","Hora":"24:00:06","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:21","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537597,"Tipo":"FBI_BIL","Cantidad":84,"Proceso":"Troquelado","Hora":"24:00:05","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:22","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537598,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"23:59:58","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:29","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537599,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"23:59:51","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:36","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537600,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"23:59:45","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:42","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537601,"Tipo":"FWE_MAY","Cantidad":24,"Proceso":"Troquelado","Hora":"23:59:44","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:43","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537602,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Troquelado","Hora":"23:59:44","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:43","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537603,"Tipo":"FCN_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"23:59:38","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:49","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537604,"Tipo":"FCN_MAY","Cantidad":408,"Proceso":"Troquelado","Hora":"23:59:32","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:55","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537605,"Tipo":"FCB_BIL","Cantidad":12,"Proceso":"Troquelado","Hora":"23:59:32","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:55","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537606,"Tipo":"FCN_MAY","Cantidad":108,"Proceso":"Troquelado","Hora":"23:59:31","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:56","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537607,"Tipo":"FCB_BIL","Cantidad":12,"Proceso":"Impresión","Hora":"23:59:30","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:45:57","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537608,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Impresión","Hora":"23:59:25","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:46:02","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537609,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Impresión","Hora":"23:59:18","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:46:09","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537610,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Impresión","Hora":"23:59:13","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:46:14","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537611,"Tipo":"ENO_MEN","Cantidad":360,"Proceso":"Impresión","Hora":"23:59:09","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:46:18","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537612,"Tipo":"ENO_MEN","Cantidad":156,"Proceso":"Impresión","Hora":"23:59:06","Horas":24,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-27 16:46:21","RPT_DIA":"AYER","DIA":"Lunes","FLUJO":"NORMAL"},{"Lote":537613,"Tipo":"FNO_MAY","Cantidad":420,"Proceso":"Impresión","Hora":"15:06:22","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:05","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537614,"Tipo":"FNO_MAY","Cantidad":108,"Proceso":"Impresión","Hora":"15:06:21","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:06","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537615,"Tipo":"FBI_BIL","Cantidad":36,"Proceso":"Troquelado","Hora":"15:06:20","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:07","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537616,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"15:06:14","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:13","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537617,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"15:06:08","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:19","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537618,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Laminado","Hora":"15:06:02","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:25","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537619,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Laminado","Hora":"15:05:57","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:30","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537620,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Laminado","Hora":"15:05:51","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:36","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537621,"Tipo":"FWE_MAY","Cantidad":396,"Proceso":"Laminado","Hora":"15:05:46","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:41","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537622,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Laminado","Hora":"15:05:46","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:41","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537623,"Tipo":"FCN_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"15:05:41","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:46","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537624,"Tipo":"FCN_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"15:05:35","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:52","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537625,"Tipo":"FCN_MAY","Cantidad":36,"Proceso":"Calidad escáner","Hora":"15:05:35","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:52","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537626,"Tipo":"FCN_MAY","Cantidad":180,"Proceso":"Calidad escáner","Hora":"15:05:33","Horas":15,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 01:39:54","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537627,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Calidad escáner","Hora":"13:55:25","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:02","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537628,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Calidad escáner","Hora":"13:55:20","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:07","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537629,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Calidad escáner","Hora":"13:55:16","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:11","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537630,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Calidad escáner","Hora":"13:55:12","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:15","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537631,"Tipo":"ENO_MEN","Cantidad":144,"Proceso":"Calidad escáner","Hora":"13:55:10","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:17","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537632,"Tipo":"ENO_MEN","Cantidad":384,"Proceso":"Calidad escáner","Hora":"13:55:06","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:21","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537633,"Tipo":"ECN_MEN","Cantidad":12,"Proceso":"Calidad escáner","Hora":"13:55:06","Horas":14,"Faltante":0,"Prioridad":"","FechaDisposicion":"2023-02-28 02:50:21","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537634,"Tipo":"FCN_MAY","Cantidad":12,"Proceso":"Calidad escáner","Hora":"06:15:16","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:11","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537635,"Tipo":"FCB_BIL","Cantidad":12,"Proceso":"Calidad escáner","Hora":"06:15:16","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:11","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537636,"Tipo":"FCN_MAY","Cantidad":12,"Proceso":"Calidad escáner","Hora":"06:15:15","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:12","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537637,"Tipo":"FNO_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"06:15:08","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:19","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537638,"Tipo":"FNO_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"06:15:01","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:26","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537639,"Tipo":"FNO_MAY","Cantidad":24,"Proceso":"Calidad escáner","Hora":"06:15:00","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:27","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537640,"Tipo":"FBI_BIL","Cantidad":24,"Proceso":"Calidad escáner","Hora":"06:15:00","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:27","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537641,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Calidad escáner","Hora":"06:14:53","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:34","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537642,"Tipo":"FWE_MAY","Cantidad":96,"Proceso":"Calidad escáner","Hora":"06:14:52","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:35","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537643,"Tipo":"FCN_MAY","Cantidad":276,"Proceso":"Calidad escáner","Hora":"06:14:47","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:40","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537644,"Tipo":"FCN_MAY","Cantidad":36,"Proceso":"Calidad escáner","Hora":"06:14:47","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:40","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537645,"Tipo":"ENO_MEN","Cantidad":12,"Proceso":"Calidad escáner","Hora":"06:14:47","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:40","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537646,"Tipo":"ENO_MEN","Cantidad":12,"Proceso":"Laminado","Hora":"06:14:46","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:41","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537647,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Laminado","Hora":"06:14:40","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:47","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537648,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Troquelado","Hora":"06:14:36","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:51","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537649,"Tipo":"ENO_MEN","Cantidad":300,"Proceso":"Troquelado","Hora":"06:14:33","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:54","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537650,"Tipo":"ENO_MEN","Cantidad":24,"Proceso":"Troquelado","Hora":"06:14:32","Horas":6,"Faltante":2,"Prioridad":"","FechaDisposicion":"2023-02-28 10:30:55","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537651,"Tipo":"FNO_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"04:37:01","Horas":4,"Faltante":4,"Prioridad":"PRIORITARIO","FechaHoraPrioridad":"2023-02-21T12:08:42.430","FechaDisposicion":"2023-02-28 12:08:26","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537652,"Tipo":"FNO_MAY","Cantidad":228,"Proceso":"Troquelado","Hora":"04:36:57","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:30","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537653,"Tipo":"FBI_BIL","Cantidad":36,"Proceso":"Impresión","Hora":"04:36:57","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:30","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537654,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Impresión","Hora":"04:36:49","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:38","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537655,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Impresión","Hora":"04:36:43","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:44","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537656,"Tipo":"FWE_MAY","Cantidad":204,"Proceso":"Verificación","Hora":"04:36:40","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:47","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537657,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Impresión","Hora":"04:36:39","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:48","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537658,"Tipo":"FCN_MAY","Cantidad":420,"Proceso":"Impresión","Hora":"04:36:33","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:54","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537659,"Tipo":"FCN_MAY","Cantidad":156,"Proceso":"Troquelado","Hora":"04:36:31","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:56","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537660,"Tipo":"FCB_BIL","Cantidad":12,"Proceso":"Despacho","Hora":"04:36:30","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:57","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537661,"Tipo":"FCN_MAY","Cantidad":144,"Proceso":"Troquelado","Hora":"04:36:28","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:08:59","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537662,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Verificación","Hora":"04:36:21","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:09:06","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537663,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Verificación","Hora":"04:36:16","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:09:11","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537664,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Verificación","Hora":"04:36:10","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:09:17","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537665,"Tipo":"ENO_MEN","Cantidad":180,"Proceso":"Troquelado","Hora":"04:36:08","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:09:19","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537666,"Tipo":"ENO_MEN","Cantidad":108,"Proceso":"Troquelado","Hora":"04:36:07","Horas":4,"Faltante":4,"Prioridad":"","FechaDisposicion":"2023-02-28 12:09:20","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537676,"Tipo":"FNO_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"01:13:19","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:08","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537677,"Tipo":"FNO_MAY","Cantidad":324,"Proceso":"Troquelado","Hora":"01:13:12","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:15","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537678,"Tipo":"FBI_BIL","Cantidad":48,"Proceso":"Despacho Obs.","Hora":"01:13:12","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:15","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537679,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"01:13:03","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:24","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537680,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"01:12:55","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:32","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537681,"Tipo":"FWE_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"01:12:41","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:46","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537682,"Tipo":"FWE_MAY","Cantidad":108,"Proceso":"Troquelado","Hora":"01:12:37","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:50","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537683,"Tipo":"FWB_BIL","Cantidad":12,"Proceso":"Troquelado","Hora":"01:12:35","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:32:52","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537684,"Tipo":"FCN_MAY","Cantidad":420,"Proceso":"Troquelado","Hora":"01:12:15","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:12","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537685,"Tipo":"FCN_MAY","Cantidad":228,"Proceso":"Troquelado","Hora":"01:12:09","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:18","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537686,"Tipo":"FCN_MAY","Cantidad":168,"Proceso":"Laminado","Hora":"01:12:05","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:22","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537687,"Tipo":"FNO_MAY","Cantidad":72,"Proceso":"Laminado","Hora":"01:12:04","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:23","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537688,"Tipo":"FWE_MAY","Cantidad":252,"Proceso":"Laminado","Hora":"01:12:00","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:27","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537689,"Tipo":"FCN_MAY","Cantidad":120,"Proceso":"Laminado","Hora":"01:11:58","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:29","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537690,"Tipo":"FCN_MAY","Cantidad":24,"Proceso":"Laminado","Hora":"01:11:57","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:30","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537691,"Tipo":"FWE_MAY","Cantidad":12,"Proceso":"Laminado","Hora":"01:11:57","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:30","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537692,"Tipo":"FCN_MAY","Cantidad":48,"Proceso":"Laminado","Hora":"01:11:56","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:31","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537693,"Tipo":"ENO_MEN","Cantidad":420,"Proceso":"Laminado","Hora":"01:11:49","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:38","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537694,"Tipo":"ENO_MEN","Cantidad":48,"Proceso":"Laminado","Hora":"01:11:49","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:38","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537695,"Tipo":"ENO_MEN","Cantidad":132,"Proceso":"Despacho Obs.","Hora":"01:11:47","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:40","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"},{"Lote":537696,"Tipo":"ECN_MEN","Cantidad":12,"Proceso":"Calidad escáner","Hora":"01:11:46","Horas":1,"Faltante":7,"Prioridad":"","FechaDisposicion":"2023-02-28 15:33:41","RPT_DIA":"HOY","DIA":"Martes","FLUJO":"NORMAL"}]
+
+            //var newJSON= JSON.stringify(dataJSON)
+            var newJSON= dataJSON
+            console.log(newJSON)
+            for (var clave in dataJSON) {
+              if (dataJSON.hasOwnProperty(clave)) {
+                valores.push(dataJSON[clave]);
+              }
+            }
+
+            var arrLotesHoy = valores.filter(elemento => elemento.RPT_DIA === 'HOY');
+            var arrLotesAyer = valores.filter(elemento => elemento.RPT_DIA === 'AYER');
+            console.log('arrLotesHoy')
+            console.log(arrLotesHoy)
+            console.log('arrLotesAyer')
+            console.log(arrLotesAyer)
+
+            fnPintarLotes('myDivHoy',arrLotesHoy);
+            fnPintarLotes('myDivAyer',arrLotesAyer);
+            /*
+            console.log('valores')
+            console.log(valores)
+            console.log('arrLotes')
+            console.log(arrLotes)
+            */
+        }
+         
+
+       function fnPintarLotes(pIdDiv , pData) {
+          var myDiv = document.getElementById(pIdDiv);
+
+          for (var i = 0; i < pData.length; i++) {
+            var textarea = document.createElement("textarea");
+            textarea.setAttribute("rows", "3");
+            textarea.setAttribute("cols", "13");
+            textarea.setAttribute('readonly', true); 
+            textarea.classList.add("textAreaLote");
+            textarea.textContent = pData[i].Lote + '\n'+ pData[i].Proceso +'\n'+ pData[i].Hora;
+            myDiv.appendChild(textarea);
+          }
+
+        }
+
+
+        function fnJuntarFilasEnUna() {
+            const table = document.getElementById("myTableLotes");
+            const rows = table.getElementsByTagName("tr");
+
+            console.log(rows.length);
+            for (let i = 1; i < rows.length; i++) {                
+                const firstCell = document.getElementById("tdLotesDespachados");
+                const rowCount = rows.length - i;
+                firstCell.setAttribute("rowspan", rows.length - 1);
+            }
+        }
+
+
+        function fnRenderMonitorBar(pDatasets, pCategories, pFormato, pId) {
+            //var chart = '';
+            //var options = '';
+
+            //pDatastsPorcentaje = [];
+            //var activos = 0;
+            //for (let x in pDatasets) {
+
+            //    if (x < pDatasets.length) {
+            //        activos += pDatasets[x];
+            //    } else {
+            //        break;
+            //    }
+            //}
+
+            //for (let y in pDatasets) {
+
+            //    if (y < pDatasets.length) {
+            //        pDatastsPorcentaje[y] = Math.round(((pDatasets[y] * 100) / activos) * 100) / 100;
+            //    } else {
+            //        break;
+            //    }
+            //}
+
+            //for (let i in pData) {
+
+            //    if (i < pData.length) {
+            //        pData[i] += ' ' + pDatastsPorcentaje[i] + '%';
+            //    } else {
+            //        break;
+            //    }
+            //}
+            var options = {
+                series: [
+                    {
+                        name: 'Marine Sprite 2001',
+                        data: [20, 67.60, 41, 37, 22, 43, 22, 23, 24, 25]
+                        
+                    },
+                    {
+                        name: 'Marine Sprite 2002',
+                        //data: [53, 32],
+                        data: [0, 40.20, 12, 69, 12, 55, 22, 88, 24, 25],
+                        Text:'Pr'
+                    },
+                     
+                ],
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    stacked: true,
+                    stackType: '100%'
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: true,
+                    },
+                },
+                stroke: {
+                    width: 1,
+                    colors: ['#fff']
+                },
+                title: {
+                    text: ''
+                },
+                xaxis: {
+                    categories: [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010],
+                    labels: {
+                        show: false
+                    }
+                },
+                //yaxis: {                
+                //    labels: {
+                //        show: false
+                //    }
+                //},
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val + "K"
+                        }
+                    }
+                },
+                fill: {
+                    opacity: 1
+
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    offsetX: 40
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+        }
+
+    </script>
+</body>
+</html>
