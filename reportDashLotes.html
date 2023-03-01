@@ -37,6 +37,7 @@
         margin-bottom: 15px;
         margin-right: 8px;
         margin-left: 10px;
+        background-color: green;
     }
     textarea::first-line
     {
@@ -62,6 +63,7 @@
     
     #myDivHoy
     {
+        /*width: 1800px;*/
         width: 1250px;
     }
     #myDivAyer
@@ -75,16 +77,16 @@
 <link href="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/factsheet.css" rel="stylesheet" />
 <script src="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/factsheet.js"></script> -->
 <head>
-    <script src="../ASSETS/util/apex-charts/dist/apexcharts.min.js"></script>
+    <!-- <script src="../ASSETS/util/apex-charts/dist/apexcharts.min.js"></script> -->
     <!--<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>-->
 </head>
 <body>
     <table id="myTableLotes">
-        <tr>
-            <th>
+        <tr style="padding-top: 11px; padding-bottom: 1px;">
+            <th  >
                 Fecha
             </th>
-            <th>
+            <th >
                 <h3>
                     Lotes por despachar según tiempo faltante</h3>
             </th>
@@ -130,11 +132,48 @@
         var arrLotes = [];
         var valores  = [];
          
+        window.onload = function() {
+        
 
- 
-        //fnJuntarFilasEnUna();
+         //fnJuntarFilasEnUna();
         //fnRenderMonitorBar();
         fnGetLotesDepachados();
+     
+        };
+        
+
+        function fnChangeColorLote(pProceso){
+            let _color="";
+            if (pProceso=='Impresión') {
+                _color = 'red';
+            }
+            if (pProceso=='Troquelado') {
+                _color = '#D1D1CD';
+            }
+            if (pProceso=='Laminado') {
+                _color = 'yellow';
+            }
+            if (pProceso=='Calidad escáner') {
+                _color = 'orange';
+            }
+            if (pProceso=='Verificación') {
+                _color = 'pink';
+            }
+            
+            return _color;
+            /*
+            var miClase = document.querySelector('.textAreaLote');
+            console.log('miClase Load');
+            console.log(miClase);
+            
+            if (miClase !== null) {                
+                miClase.style.backgroundColor = 'red';
+            } else {
+                console.log('El elemento no se encontró');
+            }
+            */
+        }
+       
 
 
         function fnGetLotesDepachados(){
@@ -152,10 +191,10 @@
 
             var arrLotesHoy = valores.filter(elemento => elemento.RPT_DIA === 'HOY');
             var arrLotesAyer = valores.filter(elemento => elemento.RPT_DIA === 'AYER');
-            console.log('arrLotesHoy')
-            console.log(arrLotesHoy)
-            console.log('arrLotesAyer')
-            console.log(arrLotesAyer)
+            // console.log('arrLotesHoy')
+            // console.log(arrLotesHoy)
+            // console.log('arrLotesAyer')
+            // console.log(arrLotesAyer)
 
             fnPintarLotes('myDivHoy',arrLotesHoy);
             fnPintarLotes('myDivAyer',arrLotesAyer);
@@ -169,16 +208,19 @@
          
 
        function fnPintarLotes(pIdDiv , pData) {
-          var myDiv = document.getElementById(pIdDiv);
-
+            var myDiv = document.getElementById(pIdDiv);
+            
           for (var i = 0; i < pData.length; i++) {
             var textarea = document.createElement("textarea");
             textarea.setAttribute("rows", "3");
             textarea.setAttribute("cols", "13");
-            textarea.setAttribute('readonly', true); 
+            textarea.setAttribute("id", "textALote");                        
+            textarea.setAttribute('readonly', true);             
+            textarea.style.backgroundColor = fnChangeColorLote(pData[i].Proceso);
             textarea.classList.add("textAreaLote");
             textarea.textContent = pData[i].Lote + '\n'+ pData[i].Proceso +'\n'+ pData[i].Hora;
             myDiv.appendChild(textarea);
+            
           }
 
         }
