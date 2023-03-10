@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+</style>
+
+<!-- <script
+  src="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/util/apex-charts/dist/apexcharts.min.js">
+</script>
+<link href="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/factsheet.css" rel="stylesheet" />
+<script src="../AdminLTE/SmartAdmin%20v1.9.1.2/DEVELOPER/COMMON_ASSETS/FACTSHEET/factsheet.js"></script> -->
+
+<head>
+  <script src="../ASSETS/util/apex-charts/dist/apexcharts.min.js"></script>
+  <!--<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>-->
+</head>
+
+
+<body>
+
+  <h2 style="text-align:center;">Tráfico de Lotes según hora disposición</h2>
+
+  <div id="chart">
+  </div>
+
+  <script>
+
+    fnRenderMonitorBar();
+
+
+
+
+    function fnRenderMonitorBar(pDatasets, pCategories, pFormato, pId) {
+      //var chart = '';
+      //var options = '';
+
+      //pDatastsPorcentaje = [];
+      //var activos = 0;
+      //for (let x in pDatasets) {
+
+      //    if (x < pDatasets.length) {
+      //        activos += pDatasets[x];
+      //    } else {
+      //        break;
+      //    }
+      //}
+
+      //for (let y in pDatasets) {
+
+      //    if (y < pDatasets.length) {
+      //        pDatastsPorcentaje[y] = Math.round(((pDatasets[y] * 100) / activos) * 100) / 100;
+      //    } else {
+      //        break;
+      //    }
+      //}
+
+      //for (let i in pData) {
+
+      //    if (i < pData.length) {
+      //        pData[i] += ' ' + pDatastsPorcentaje[i] + '%';
+      //    } else {
+      //        break;
+      //    }
+      //}
+      var options = {
+        series: [{
+          name: 'Hora 0',
+          type: 'column',
+          data: [0, 450, 800, 1500, 1700, 2000, 2050, 2083]
+        }, {
+          name: 'Hora 1',
+          type: 'column',
+          data: [2840, 350, 700, 1200, 1300, 1800, 1950, 2000]
+        }, {
+          name: 'Limite establecido',
+          type: 'line',
+          data: [2083, 2083, 2083, 2083, 2083, 2083, 2083, 2083]
+        },
+        {
+          name: 'Revenue2',
+          type: 'line',
+          data: [0, 450, 800, 1500, 1700, 2000, 2050, 2083]
+        }],
+        chart: {
+          height: 530,
+          type: 'line',
+          stacked: false
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [1, 1, 4]
+        },
+        // title: {
+        //   text: 'XYZ - Stock Analysis (2009 - 2016)',
+        //   align: 'left',
+        //   offsetX: 110
+        // },
+        xaxis: {
+          categoriesy: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          //min: 0,
+          //max:2016
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: true,
+              color: '#FF1B06'
+            },
+            labels: {
+              style: {
+                colors: '#FF1B06',
+              }
+            },
+            title: {
+              text: "Cantidad de DNI´s",
+              style: {
+                color: '#FF1B06',
+              }
+            },
+            tooltip: {
+              enabled: true
+            },
+            min: 0,
+            max: 3000
+          },
+          // {
+          //   seriesName: 'Income',
+          //   opposite: true,
+          //   axisTicks: {
+          //     show: true,
+          //   },
+          //   axisBorder: {
+          //     show: true,
+          //     color: '#00E396'
+          //   },
+          //   labels: {
+          //     style: {
+          //       colors: '#00E396',
+          //     }
+          //   },
+          //   title: {
+          //     text: "Operating Cashflow (thousand crores)",
+          //     style: {
+          //       color: '#00E396',
+          //     }
+          //   },
+          //   min: 0,
+          //   max: 2083
+          // },
+
+        ],
+
+        tooltip: {
+          fixed: {
+            enabled: true,
+            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+            offsetY: 30,
+            offsetX: 60
+          },
+        },
+        legend: {
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+
+
+
+    }
+
+  </script>
+</body>
+
+</html>
