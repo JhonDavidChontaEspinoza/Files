@@ -1,0 +1,27 @@
+[
+  {
+    "status": 1,
+    "cantidad": 2,
+    "proceso": "Impresión"
+  },
+  {
+    "status": 2,
+    "cantidad": 4,
+    "proceso": "Troquelado"
+  },
+  {
+    "status": 3,
+    "cantidad": 5,
+    "proceso": "Laminado"
+  },
+  {
+    "status": 7,
+    "cantidad": 28,
+    "proceso": "Despacho"
+  },
+  {
+    "status": 9,
+    "cantidad": 7,
+    "proceso": "Despacho Obs."
+  }
+]
